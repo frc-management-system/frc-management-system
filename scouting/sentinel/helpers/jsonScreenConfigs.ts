@@ -1,4 +1,4 @@
-import { screens } from '../helpers/testScreens.json';
+import { screens } from '../helpers/matchscout.json';
 import { ComponentSchema } from '../types/ComponentTypes';
 
 export const jsonScreens = Object.keys(screens);

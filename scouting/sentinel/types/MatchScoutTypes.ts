@@ -6,8 +6,8 @@ export type Match = {
 };
 
 export interface MatchInfo  {
-    alliance: string,
-    alliancePosition: string,
+    alliance: 'RED' | 'BLUE' | '',
+    alliancePosition: '1' | '2' | '3' | '',
     event: string,
     matches: Match[],
     currentMatch?: Match,
@@ -15,12 +15,3 @@ export interface MatchInfo  {
     logEvents:[]
 };
 
-export type MatchScoutAction = {
-  type: "load" | "edit" | "nextMatch",
-  loadData?: string;
-  matchNum?: number;
-  editData?: {
-    scouter: string;
-    matchNum: number;
-  }
-};

@@ -1,12 +1,11 @@
-import DeviceInfo from 'react-native-device-info';
 import fs, { ReadDirItem } from 'react-native-fs';
-import { unzip, zip } from 'react-native-zip-archive';
-import { yearConfig } from '../../common/helpers';
-import { TDenseLog, TLog } from '../../common/types';
-import { TFileManager, TLogStructure } from '../../types';
+import { unzip } from 'react-native-zip-archive';
+//import { yearConfig } from '../../common/helpers';
+import { useMatchInfo } from '../contexts/MatchScoutContext';
+import { TFileManager, TLogStructure } from '../types/CommonTypes';
 
 export const useFileManager: () => TFileManager = (): TFileManager => {
-  const { event } = useAssignment();
+  const { matchInfo } = useMatchInfo();
 
   const logsRoot = `${fs.DocumentDirectoryPath}/logs`;
   const logsEvent = `${logsRoot}/${event}`;
@@ -23,7 +22,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     await Promise.all(promises);
   };
 
-  const saveLog: TFileManager['saveLog'] = async <eventType>(
+  /* const saveLog: TFileManager['saveLog'] = async <eventType>(
     log: TLog<eventType>
   ): Promise<string> => {
     let denseLog: TDenseLog = {
@@ -59,7 +58,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     await fs.unlink(`${unzippedLogsPath}/${fileName}`);
 
     return `${zippedLogsPath}/${fileName}`;
-  };
+  }; */
 
   const getZippedLog: TFileManager['getZippedLog'] = async (path: string): Promise<string> => {
     return await fs.readFile(path, 'base64');
@@ -165,7 +164,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     createBaseDirs,
     unzipAssignment,
     unzipB64,
-    saveLog,
+    //saveLog,
     getZippedLog,
     getEventLogInfo,
     getLogStructure,

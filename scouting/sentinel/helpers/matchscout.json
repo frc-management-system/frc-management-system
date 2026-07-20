@@ -1,0 +1,51 @@
+{
+    "screens":
+    {
+        "auto":{
+            "title": "Screen 1",
+            "components": 
+            {
+                "type": "view",
+                "props": {"style":{"flexDirection": "column", "justifyContent": "center", "alignItems": "center"}},
+                "children": [
+                    {
+                        "type": "text",
+                        "props": 
+                        {
+                            "innerText": "Text box name",
+                            "style":
+                            {
+                                "flex": 1,
+                                "fontSize": 20,
+                                "color": "#000000",
+                                "textAlign": "center"
+                            }
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "props":
+                        {
+                            "innerText": "Button Name",
+                            "id":"button1",
+                            "label":"Button name"
+                        }
+                    }
+                ]
+            }
+        },
+        "teleop1":{
+            "title": "Test Screen 2",
+            "components":
+            {
+                "type": "view",
+                "props": {"style":{"flex": 1, "flexDirection": "column", "justifyContent": "center", "alignItems": "center"}},
+                "children": 
+                [
+                    {"type": "text", "props": {"value": "Text box name"}},
+                    {"type": "button", "props": {"id": "button1", "label": "Button name", "onClick": "alert('Button clicked!');"}}
+                ]
+            }
+        }
+    }
+}

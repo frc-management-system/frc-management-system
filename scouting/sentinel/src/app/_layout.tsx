@@ -8,7 +8,7 @@ export default function RootLayout() {
      <MatchScoutProvider>
         <Stack screenOptions={{headerShown: false}}>
           <Stack.Screen name="index" options={{ title: 'Index' }} />
-          <Stack.Screen name="QRCapture" options={{ title: 'QRCapture' }} />
+          <Stack.Screen name="(MatchScout)" options={{ title: 'Match Scout Home' }} />
         </Stack>
       </MatchScoutProvider> 
     </TimerProvider>
