@@ -24,7 +24,7 @@ export default function Index() {
           <Button 
             mode='contained'
             onPress={(): void => {
-              router.push('/MatchScout');
+              router.push('/(MatchScout)');
             }}
           >
             Match Scout

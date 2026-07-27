@@ -33,7 +33,7 @@ const [isCameraVisible, setIsCameraVisible] = useState(false);
                 </Card.Actions>
             </Card>
             <View style={{display: isCameraVisible ? 'flex' : 'none', flexGrow: 4}}>
-                <QRCapture style={{height:500, width: 500}} context={scoutInfo} nextPath='[match]' router={router} ></QRCapture>
+                <QRCapture style={{height:500, width: 500}} context={scoutInfo.currentMatchState} nextPath='[match]' router={router} ></QRCapture>
             </View>
             
         </View>

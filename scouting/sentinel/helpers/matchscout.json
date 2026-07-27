@@ -9,10 +9,32 @@
                 "props": {"style":{"flexDirection": "column", "justifyContent": "center", "alignItems": "center"}},
                 "children": [
                     {
+                        "type": "card",
+                        "props": {"flex": 1, "margin": 20},
+                        "children": [
+                            {
+                                "type": "cardActions",
+                                "props":{"style": {"flex":1}},
+                                "children": 
+                                [
+                                    {
+                                        "type": "radioButton",
+                                        "props": 
+                                        {
+                                            "style": {"margin": 20},
+                                            "value": "leave",
+                                            "status": "currentMatchState.robotState.leave",
+                                            "onPress": {"eventType": "ChangeRadioStatus", "field": "leave", "logCurrentRobotState": false}
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         "type": "text",
                         "props": 
                         {
-                            "innerText": "Text box name",
                             "style":
                             {
                                 "flex": 1,
@@ -20,16 +42,17 @@
                                 "color": "#000000",
                                 "textAlign": "center"
                             }
-                        }
+                        },
+                        "children": "Text Here"
                     },
                     {
                         "type": "button",
                         "props":
                         {
-                            "innerText": "Button Name",
-                            "id":"button1",
-                            "label":"Button name"
-                        }
+                            "mode":  "contained",
+                            "onPress": "handleEvent('clearAlgae');"
+                        },
+                        "children": "Button Name"
                     }
                 ]
             }
@@ -43,9 +66,21 @@
                 "children": 
                 [
                     {"type": "text", "props": {"value": "Text box name"}},
-                    {"type": "button", "props": {"id": "button1", "label": "Button name", "onClick": "alert('Button clicked!');"}}
+                    {"type": "button", "props": { "mode": "contained", "onPress": "handleEvent('clearAlgae');"}}
                 ]
             }
         }
+    },
+    "robotState":
+    {
+        "actionType": "start",
+        "timestamp": 0,
+        "location": "",
+        "gamePiece": "",
+        "miss": "",
+        "leave": "unchecked",
+        "notes": "",
+        "clearAlgae": 0,
+        "defenseRating": 0
     }
 }

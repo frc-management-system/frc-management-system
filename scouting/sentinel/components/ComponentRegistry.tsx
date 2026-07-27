@@ -1,23 +1,30 @@
 import React from 'react';
-import { Button, Card, RadioButton, Text } from 'react-native-paper';
 import { View } from 'react-native';
+import { Button, Card, RadioButton, Text } from 'react-native-paper';
+import { handleEvent } from '../helpers/eventHandlers';
 
-export const button = ({props, innerText, OnClick}: {props: {}, innerText: string, OnClick?: () => void}) => (
-    <Button {...props} onPress={OnClick}>{innerText}</Button>
+type EventProps = {
+    eventType: string,
+    field: string,
+    logCurrentRobotState: boolean
+}
+
+export const button = ({props, children}: {props?: {}, children: string}) => (
+    <Button {...props}>{children}</Button>
 );
 
-export const text = ({props, innerText}: {props?: {}, innerText: string}) => (
-    <Text {...props}>{innerText}</Text>
+export const text = ({props, children}: {props?: {}, children: string}) => (
+    <Text {...props}>{children}</Text>
 );
 
-export const card = ({props, children, OnClick}: {props?: {}, children: [], OnClick?: () => void}) => (
-    <Card {...props} onPress={OnClick}>
-        {Array.isArray(children) ? children.map((child, index) => <Text key={index}>{child}</Text>) : <Text>{children}</Text>}
+export const card = ({props, children}: {props?: {}, children: React.ReactNode}) => (
+    <Card {...props}>
+        {children}
     </Card>
 );
 
-export const radioButton = ({props, value, OnPress}: {props?: {}, value: string, OnPress?: () => void}) => (
-    <RadioButton {...props} value={value} onPress={OnPress} />
+export const radioButton = ({props, onPress, status, value}: {props?: {}, onPress: EventProps , status: string, value: string}) => (
+    <RadioButton {...props} value={value} onPress={() => {handleEvent(onPress?.eventType, onPress?.field, onPress?.logCurrentRobotState)}} status='checked'  />
 );
 
 export const view = ({props, children}: {props?: {}, children?:[]}) => (
@@ -26,10 +33,15 @@ export const view = ({props, children}: {props?: {}, children?:[]}) => (
     </View>
 );
 
+export const cardActions = ({props, children}: {props?: {}, children:React.ReactNode}) => (
+    <Card.Actions {...props}>{children}</Card.Actions>
+);
+
 export const ComponentMap: Record<string, React.ComponentType<any>> = {
   button,
   text,
   card,
   radioButton,
-  view
+  view,
+  cardActions
 };

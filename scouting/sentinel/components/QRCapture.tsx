@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { MatchScout } from '../contexts/MatchScoutContext';
+import { getInitalRobotState } from '../helpers/jsonScreenConfigs';
 import { useFileManager } from '../hooks/useFileManager';
 
 export type QRCaptureProps = {
@@ -38,7 +39,7 @@ export default function QRCapture({context, nextPath, style, router}: QRCaptureP
         const nextMatchNum: number =
           (await fileManager.getLastMatchNumber(JSON.parse(assignmentTxt ?? '')?.e ?? '')) + 1;
 
-        context.matchInfo = context.load(assignmentTxt, nextMatchNum);
+        context.load(assignmentTxt, nextMatchNum, getInitalRobotState());
 
         await new Promise((res) => setTimeout(res, 500));
         router.navigate(relativePath);
