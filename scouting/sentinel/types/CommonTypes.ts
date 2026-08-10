@@ -1,3 +1,5 @@
+import { MatchScout } from "../contexts/MatchScoutContext";
+
 export type TLogStructure = {
   [event: string]: {
     name: string;
@@ -14,23 +16,22 @@ export type TLog<event> = {
   alliancePos: '1' | '2' | '3' | '';
 };
 
-export type TDenseLog = {
-  t: number; // teamNum
-  m: number; // matchNum
-  e: Record<string, any>[]; // events
-  s: string; // scouter
-  a: 'RED' | 'BLUE' | ''; // alliance
-  p: '1' | '2' | '3' | ''; // alliancePos
-};
 
 export type TFileManager = {
-  createBaseDirs: () => Promise<void>;
+  createBaseDirs: () => void;
+  saveMatchScoutLog: (context: MatchScout) => Promise<string>;
+  getZippedLog: (path: string) => Promise<string>;
+  getEventLogInfo: (eventName: string, scoutType: 'MatchScout' | 'QualitativeScout' | 'PitScout') => Promise<{ name: string; path: string }[]>;
+  getLogStructure: (scoutType: 'MatchScout' | 'QualitativeScout' | 'PitScout') => Promise<TLogStructure>;
+  deleteFile: (path: string) => void;
+  getLastMatchNumber: (eventName: string, scoutType: 'MatchScout' | 'QualitativeScout' | 'PitScout') => Promise<number>;
   unzipAssignment: (assignmentB64: string) => Promise<string>;
   unzipB64: (inputB64: string, outFilePath: string, fileName: string) => Promise<string>;
-  //saveLog: <eventType>(log: TLog<eventType>) => Promise<string>;
-  getZippedLog: (path: string) => Promise<string>;
-  getEventLogInfo: (eventName: string) => Promise<{ name: string; path: string }[]>;
-  getLogStructure: () => Promise<TLogStructure>;
-  deleteFile: (path: string) => Promise<void>;
-  getLastMatchNumber: (eventName: string) => Promise<number>;
+};
+
+export type EventProps = {
+    eventType: string,
+    field: string,
+    logCurrentRobotState: boolean,
+    newValue?: string | number
 };

@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
+import { EventProps } from '../types/CommonTypes';
 import { Match, MatchInfo } from '../types/MatchScoutTypes';
+import { useTimer } from './TimerContext';
 
 export interface MatchScout{
     matchInfo: MatchInfo;
@@ -7,8 +9,8 @@ export interface MatchScout{
     load: LoadMatchInfoType;
     nextMatch: SetNextMatch;
     edit: EditMatchInfo;
-    increment: IncrementRobotStateField;
-    updateRadio: ChangeRadioButtonState;
+    handleEvent: HandleEvents;
+    eventLog:Object[];
 }
 
 export interface MatchScoutContextType{
@@ -18,8 +20,7 @@ export interface MatchScoutContextType{
 type LoadMatchInfoType = (loadData:string, matchNumber: number, robotState: {}) => void;
 type SetNextMatch = (matchInfo: MatchInfo) => MatchInfo;
 type EditMatchInfo = (matchInfo: MatchInfo, scouter: string, match: number) => MatchInfo;
-type IncrementRobotStateField = (field: string) => void;
-type ChangeRadioButtonState = (field: string) => void;
+type HandleEvents = (events: EventProps[]) => void;
 
 const MatchContext = createContext<MatchScoutContextType>({currentMatchState: {} as MatchScout});
 
@@ -32,15 +33,16 @@ export const useMatchInfo = () => {
 };
 
 export function MatchScoutProvider({children}: {children: ReactNode}){    
+    const timer = useTimer();
     const [matchInfo, setMatchInfo] = useState<MatchInfo>({
         alliance: '',
         alliancePosition:'',
         event: '',
         matches: [],
         scouterList: [],
-        logEvents:[],
     });
     const [robotState, setRobotState] = useState<Object>({});
+    const [eventLog, setEventLog] = useState<Object[]>([]);
     
     function loadMatchInfo(loadData: string, matchNumber: number, initialRobotState: {}): void {
         const inputMatchInfo = JSON.parse(loadData ?? '');
@@ -50,8 +52,7 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
             alliance: inputMatchInfo.a,
             alliancePosition: inputMatchInfo.ap,
             matches: [],
-            scouterList: [],
-            logEvents: [],
+            scouterList: []
         };
 
         newMatchInfo.matches = inputMatchInfo.m.map(
@@ -73,8 +74,6 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
         } else {
             newMatchInfo.currentMatch = currMatch;
         }
-
-        //newMatchInfo.robotState = robotState;
 
         setMatchInfo(newMatchInfo);
         setRobotState(initialRobotState);
@@ -102,19 +101,51 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
     function incrementRobotStateField(field: string): void {
         //need to add check that the field is a number
         const currentFieldValue: number = currentMatchState.robotState[field as keyof typeof currentMatchState.robotState];
-        const currentRobotState = {...currentMatchState.robotState}
-        //setCurrentMatchState({...currentMatchState, matchInfo: {...currentMatchState.matchInfo, robotState:{...currentRobotState, [field]: currentFieldValue +1}}});
+        const currentRobotState = {...currentMatchState.robotState};
+        setRobotState(oldRobotState => ({...oldRobotState, [field]: currentFieldValue +1}));
     };
 
     function updateRadioButtonStatus(field: string): void {
-        console.log("context robot state:", currentMatchState.robotState);
         const currentRobotState = {...currentMatchState.robotState};
         const currentRadioState: string = currentMatchState.robotState[field as keyof typeof currentMatchState.robotState];
-        //currentRobotState[field as keyof typeof currentMatchState.matchInfo.robotState] =  currentRadioState == "unchecked" ? "checked" : "unchecked";
-        //setCurrentMatchState({...currentMatchState, matchInfo: {...currentMatchState.matchInfo, robotState:{...currentRobotState, [field]: currentRadioState==="unchecked" ? "checked" : "unchecked"}}});
-
         setRobotState(oldRobotState => ({...oldRobotState, [field]: currentRadioState == "unchecked" ? "checked" : "unchecked"}));
     };
+
+    function handleEvent(events:EventProps[]):void {
+        events.forEach((event) => {
+            switch (event.eventType){
+                case "ChangeRadioState":
+                    updateRadioButtonStatus(event.field);
+                    break;
+                case "IncrementField":
+                    incrementRobotStateField(event.field);
+                    break;
+            }
+            if (event.logCurrentRobotState == true ) {logEvent();};
+            console.log(currentMatchState.eventLog);
+        })
+    };
+
+    function logEvent(): void {
+        const eventToLog = {
+            alliance: currentMatchState.matchInfo.alliance,
+            alliancePosition: currentMatchState.matchInfo.alliancePosition,
+            matchNumber: currentMatchState.matchInfo.currentMatch?.matchNum,
+            teamNumber: currentMatchState.matchInfo.currentMatch?.teamNum,
+            scouter: currentMatchState.matchInfo.currentMatch?.scouter,
+            timestamp: 0,
+            ...currentMatchState.robotState
+        };
+        if (eventLog.length == 0){
+            timer.start();
+            setEventLog([...currentMatchState.eventLog, eventToLog]);
+        }
+        else {
+            eventToLog.timestamp = timer.getTimeSeconds();
+            setEventLog([...currentMatchState.eventLog, eventToLog]);
+        }
+        console.log(currentMatchState.eventLog);
+    }
     
     
     const currentMatchState: MatchScout = {
@@ -123,8 +154,8 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
         load: loadMatchInfo,
         nextMatch: setNextMatch,
         edit: editMatchInfo,
-        increment : incrementRobotStateField,
-        updateRadio: updateRadioButtonStatus
+        handleEvent: handleEvent,
+        eventLog
     };
     
     return (

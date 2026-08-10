@@ -1,18 +1,20 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { View } from 'react-native';
-import { Button, Card } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { Button, Card, Surface, useTheme } from 'react-native-paper';
 import QRCapture from '../../../components/QRCapture';
 import { useMatchInfo } from '../../../contexts/MatchScoutContext';
+import { globalStyles } from '../../styles/globalStyles';
 
 export default function MatchScoutHome() {
+const theme = useTheme();
 const router = useRouter();
 const scoutInfo = useMatchInfo();
 const [isCameraVisible, setIsCameraVisible] = useState(false);
 
     return (
-        <View style={{flexDirection: 'column', alignItems: 'center'}}>
-            <Card>
+        <Surface style={{...globalStyles.container,alignItems:'center', justifyContent:'center'}}>
+            <Card mode='contained'>
                 <Card.Actions style={{alignItems:'center'}}>
                     <Button
                         mode='contained'
@@ -25,19 +27,25 @@ const [isCameraVisible, setIsCameraVisible] = useState(false);
                     <Button
                         mode='contained'
                         onPress={(): void => {
-                            //router.navigate('/MatchLogs');
+                            router.navigate('/MatchLogs');
                         }}
                     >
                         Match Logs
                     </Button>
                 </Card.Actions>
             </Card>
-            <View style={{display: isCameraVisible ? 'flex' : 'none', flexGrow: 4}}>
+            <Surface style={{display: isCameraVisible ? 'flex' : 'none', flexGrow: 4}}>
                 <QRCapture style={{height:500, width: 500}} context={scoutInfo.currentMatchState} nextPath='[match]' router={router} ></QRCapture>
-            </View>
+            </Surface>
             
-        </View>
+        </Surface>
 
     );
     
 }
+
+const styles = StyleSheet.create({
+  button: {
+    margin: 10
+  }
+});

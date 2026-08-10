@@ -1,12 +1,16 @@
 import React from 'react';
+import { useMatchInfo } from '../contexts/MatchScoutContext';
 import { ComponentSchema } from '../types/ComponentTypes';
 import { ComponentMap } from './ComponentRegistry';
 
 interface DynamicRendererProps {
   config: ComponentSchema;
+
 }
 
 export const DynamicRenderer: React.FC<DynamicRendererProps> = ({ config }) => {
+  const {currentMatchState} = useMatchInfo();
+
   // Resolve component matching the string key
   const Component = ComponentMap[config.type];
 
@@ -27,7 +31,7 @@ export const DynamicRenderer: React.FC<DynamicRendererProps> = ({ config }) => {
       renderedChildren = config.children;
     }
   }
-
+  console.log({...config.props});
   // Safely produce the element at runtime
-  return <Component {...config.props}>{renderedChildren}</Component>;
+  return <Component {...config.props} field={config.field} context={currentMatchState}>{renderedChildren}</Component>;
 };

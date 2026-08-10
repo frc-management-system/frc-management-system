@@ -1,40 +1,49 @@
 import React from 'react';
-import { View } from 'react-native';
-import { Button, Card, RadioButton, Text } from 'react-native-paper';
-import { handleEvent } from '../helpers/eventHandlers';
+import { Button, Card, RadioButton, Surface, Text } from 'react-native-paper';
+import { MatchScout } from '../contexts/MatchScoutContext';
+import { EventProps } from '../types/CommonTypes';
 
-type EventProps = {
-    eventType: string,
-    field: string,
-    logCurrentRobotState: boolean
-}
 
-export const button = ({props, children}: {props?: {}, children: string}) => (
-    <Button {...props}>{children}</Button>
+export const button = ({style, onPress, context, children}: {style?: {}, onPress: EventProps[], context:MatchScout, children: string}) => (
+    <Button 
+        mode="contained"
+        style={style}
+        onPress={() => context.handleEvent(onPress)}
+    >
+        {children}
+    </Button>
 );
 
-export const text = ({props, children}: {props?: {}, children: string}) => (
-    <Text {...props}>{children}</Text>
+export const text = ({style, children}: {style?: {}, children: string}) => (
+    <Text style={style}>{children}</Text>
 );
 
-export const card = ({props, children}: {props?: {}, children: React.ReactNode}) => (
-    <Card {...props}>
+export const card = ({style, children}: {style?: {}, children: React.ReactNode}) => (
+    <Card mode='contained' style={style}>
         {children}
     </Card>
 );
 
-export const radioButton = ({props, onPress, status, value}: {props?: {}, onPress: EventProps , status: string, value: string}) => (
-    <RadioButton {...props} value={value} onPress={() => {handleEvent(onPress?.eventType, onPress?.field, onPress?.logCurrentRobotState)}} status='checked'  />
+export const radioButton = ({style, field, onPress, context }: {style?: {}, field: string, onPress: EventProps[], context: MatchScout}) => (
+    <RadioButton.Item
+        style={style}
+        label={field}
+        value={field}  
+        onPress={() => context.handleEvent(onPress)} 
+        status={context.robotState[field as keyof typeof context.robotState]} 
+    />
 );
 
-export const view = ({props, children}: {props?: {}, children?:[]}) => (
-    <View {...props}>
-        {Array.isArray(children) ? children.map((child, index) => <Text key={index}>{child}</Text>) : <Text>{children}</Text>}
-    </View>
+export const surface = ({style, children}: {style?: {}, children:React.ReactNode}) => (
+    <Surface style={style}>
+        {children}
+    </Surface>
 );
 
-export const cardActions = ({props, children}: {props?: {}, children:React.ReactNode}) => (
-    <Card.Actions {...props}>{children}</Card.Actions>
+export const cardActions = ({style, children}: { style?:{}, children:React.ReactNode}) => (
+    <Card.Actions  style={style}>
+        {children}
+    </Card.Actions>
 );
 
 export const ComponentMap: Record<string, React.ComponentType<any>> = {
@@ -42,6 +51,6 @@ export const ComponentMap: Record<string, React.ComponentType<any>> = {
   text,
   card,
   radioButton,
-  view,
+  surface,
   cardActions
 };

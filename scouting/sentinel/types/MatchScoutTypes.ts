@@ -12,6 +12,5 @@ export interface MatchInfo  {
     matches: Match[],
     currentMatch?: Match,
     scouterList: string[],
-    logEvents:[],
 };
 

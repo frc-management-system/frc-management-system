@@ -1,27 +1,30 @@
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Card } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { Button, Card, Surface, useTheme } from 'react-native-paper';
 import { useFileManager } from '../../hooks/useFileManager';
 import { TFileManager } from '../../types/CommonTypes';
+import { globalStyles } from '../styles/globalStyles';
 
 export default function Index() {
 
   const fileManager: TFileManager = useFileManager();
   const router = useRouter();
+  const theme = useTheme();
 
   useEffect((): void => {
     fileManager.createBaseDirs();
   }, []);
 
   return (
-    <View style={{ margin: 20, alignItems: 'center' }}>
-      <Card>
+    <Surface style={{...globalStyles.container, alignItems:'center', justifyContent:'center'}}>
+      <Card mode='contained'>
         <Card.Title
           title = "Sentinel"
         />
-        <Card.Actions>
+        <Card.Actions style={{flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center' }}>
           <Button 
+            style={styles.button}
             mode='contained'
             onPress={(): void => {
               router.push('/(MatchScout)');
@@ -30,6 +33,7 @@ export default function Index() {
             Match Scout
           </Button>
           <Button
+            style={styles.button}
             mode='contained'
             onPress={(): void => {
 
@@ -38,12 +42,14 @@ export default function Index() {
             Qualitative Scout
           </Button>
           <Button
+            style={styles.button}
             mode='contained'
             onPress={(): void =>{}}
           >
             Pit Scout
           </Button>
           <Button
+            style={styles.button}
             mode='contained'
             onPress={(): void => {}}
           >
@@ -51,14 +57,12 @@ export default function Index() {
           </Button>
         </Card.Actions>
       </Card>
-    </View>
+    </Surface>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+  button: {
+    margin: 10
+  }
 });

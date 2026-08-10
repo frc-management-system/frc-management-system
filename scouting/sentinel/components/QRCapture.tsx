@@ -34,10 +34,11 @@ export default function QRCapture({context, nextPath, style, router}: QRCaptureP
     isCaptured.current = true;
     //setLoading(true);
 
-    if ("load" in context) {
+    //this will need to be updated when we get more contexts added
+    if ('matchInfo' in context) {
         const assignmentTxt: string = await fileManager.unzipAssignment(codes);
         const nextMatchNum: number =
-          (await fileManager.getLastMatchNumber(JSON.parse(assignmentTxt ?? '')?.e ?? '')) + 1;
+          (await fileManager.getLastMatchNumber(JSON.parse(assignmentTxt ?? '')?.e ?? '', 'MatchScout')) + 1;
 
         context.load(assignmentTxt, nextMatchNum, getInitalRobotState());
 
@@ -70,7 +71,6 @@ export default function QRCapture({context, nextPath, style, router}: QRCaptureP
                 style={style}
                 onBarcodeScanned={
                     ({ data }) => {
-                        console.log(data);
                         advance(data); // here you can get your barcode id or url
                     }
                 }
