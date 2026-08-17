@@ -6,7 +6,7 @@
             "components": 
             {
                 "type": "surface",
-                "props": {"style":{"width": "100%", "justifyContent": "center", "alignItems": "center"}},
+                "props": {"style":{"flex": 1,"width": "100%", "justifyContent": "center", "alignItems": "center"}},
                 "children": [
                     {
                         "type": "card",
@@ -80,6 +80,19 @@
         "leave": "unchecked",
         "notes": "",
         "clearAlgae": 0,
-        "defenseRating": 0
-    }
+        "defenseRating": 0,
+        "hasCoral": false,
+        "hasAlgae": false
+    },
+    "logFields":
+    [
+        "actionType",
+        "location",
+        "gamePiece",
+        "miss",
+        "leave",
+        "notes",
+        "clearAlgae",
+        "defenseRating"
+    ]
 }

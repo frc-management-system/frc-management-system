@@ -17,7 +17,7 @@ export default function CustomScreen(): React.JSX.Element {
     
 
     return(
-        <Surface style={{...globalStyles.container, paddingTop: insets.top, paddingBottom: insets.bottom}}>
+        <Surface style={{...globalStyles.container, flexDirection:"column", paddingTop: insets.top, paddingBottom: insets.bottom}}>
             <DynamicRenderer config={screenComponents} />
             <Surface style={{flexDirection:"row", flex:1, alignContent: "space-between"}}>
                 <Button mode="contained" style={{flex:1, alignSelf: "flex-end", flexBasis: "100%" }} onPress={() =>fileManager.saveMatchScoutLog(currentMatchState)}>Submit</Button>
