@@ -1,4 +1,4 @@
-import { robotState, screens } from '../helpers/matchscout.json';
+import { logFields, robotState, screens } from '../helpers/matchscout.json';
 import { ComponentSchema } from '../types/ComponentTypes';
 
 export const jsonScreens = Object.keys(screens);
@@ -11,3 +11,7 @@ export const getScreenComponent = (screenName: keyof typeof screens): ComponentS
 export const getInitalRobotState = () => {
     return robotState;
 };
+
+export const getLogFields = () => {
+    return logFields;
+}

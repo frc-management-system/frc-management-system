@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
+import { getLogFields } from '../helpers/jsonScreenConfigs';
 import { EventProps } from '../types/CommonTypes';
 import { Match, MatchInfo } from '../types/MatchScoutTypes';
 import { useTimer } from './TimerContext';
@@ -127,15 +128,17 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
     };
 
     function logEvent(): void {
-        const eventToLog = {
+        const fieldsToLog = getLogFields();
+        const baseEventToLog = {
             alliance: currentMatchState.matchInfo.alliance,
             alliancePosition: currentMatchState.matchInfo.alliancePosition,
             matchNumber: currentMatchState.matchInfo.currentMatch?.matchNum,
             teamNumber: currentMatchState.matchInfo.currentMatch?.teamNum,
             scouter: currentMatchState.matchInfo.currentMatch?.scouter,
-            timestamp: 0,
-            ...currentMatchState.robotState
+            timestamp: 0
         };
+        const robotStateToLog = Object.fromEntries(Object.entries(currentMatchState.robotState).filter(([key,value]) => fieldsToLog.includes(key)));
+        const eventToLog = {...baseEventToLog, ...robotStateToLog};
         if (eventLog.length == 0){
             timer.start();
             setEventLog([...currentMatchState.eventLog, eventToLog]);
