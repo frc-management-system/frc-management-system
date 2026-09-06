@@ -11,6 +11,7 @@ export default function RootLayout() {
           <Stack screenOptions={{headerShown: false}}>
             <Stack.Screen name="index" options={{ title: 'Index'}} />
             <Stack.Screen name="(MatchScout)" options={{ title: 'Match Scout Home' }} />
+            <Stack.Screen name='QRShow' options={{title: 'Scan QR Code'}} />
           </Stack> 
         </MatchScoutProvider>
       </TimerProvider>

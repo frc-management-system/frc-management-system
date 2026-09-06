@@ -33,13 +33,12 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     if (!zippedLogsPath.exists) {zippedLogsPath.create({intermediates: true})};
 
     const file = new File(unzippedLogsPath, fileName);
-    console.log(file.uri);
     file.create({intermediates: true, overwrite: true});
     file.write(logString);
     console.log(logString); 
-    await zip([`${file.uri}`], `${zippedLogsPath.uri}/${fileName}`);
+    await zip([`${file.uri}`], `${zippedLogsPath.uri}${fileName}`);
     file.delete();
-    return `${zippedLogsPath.uri}/${fileName}`;
+    return `${zippedLogsPath.uri}${fileName}`;
   };
 
   const getZippedLog: TFileManager['getZippedLog'] = async (path: string): Promise<string> => {

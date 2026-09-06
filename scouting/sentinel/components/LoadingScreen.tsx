@@ -1,6 +1,8 @@
-import { Button, Card, Text } from 'react-native-paper';
+import { Button, Card, Surface, Text } from 'react-native-paper';
 //import { LoadingSymbol } from '../basics/LoadingSymbol';
+import { globalStyles } from '@/styles/globalStyles';
 import React from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type PLoadingScreen = {
   message: string;
@@ -9,6 +11,7 @@ export type PLoadingScreen = {
 };
 
 export function LoadingScreen({ message, buttonText, onPress }: PLoadingScreen): React.JSX.Element {
+  const insets = useSafeAreaInsets();
   const getButton = () => {
     return buttonText && onPress ? (
       <Button mode="outlined" onPress={onPress} >{buttonText}</Button>
@@ -18,9 +21,11 @@ export function LoadingScreen({ message, buttonText, onPress }: PLoadingScreen):
   };
 
   return (
-    <Card>
-      <Text variant="headlineMedium">{message}</Text>
-      {getButton()}
-    </Card>
+    <Surface style={{...globalStyles.container,paddingTop: insets.top, paddingBottom: insets.bottom}}>
+      <Card style={{flex: 1}}>
+        <Text variant="headlineMedium">{message}</Text>
+        {getButton()}
+      </Card>
+    </Surface>
   );
 }

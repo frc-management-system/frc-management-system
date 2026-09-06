@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { Button, Surface, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DynamicRenderer } from '../../../components/DynamicRenderer';
@@ -9,6 +10,7 @@ import { globalStyles } from '../../styles/globalStyles';
 
 export default function CustomScreen(): React.JSX.Element {
     const insets = useSafeAreaInsets();
+    const router = useRouter();
     const theme = useTheme();
     const { currentMatchState } = useMatchInfo();
     const fileManager = useFileManager();
@@ -20,7 +22,17 @@ export default function CustomScreen(): React.JSX.Element {
         <Surface style={{...globalStyles.container, flexDirection:"column", paddingTop: insets.top, paddingBottom: insets.bottom}}>
             <DynamicRenderer config={screenComponents} />
             <Surface style={{flexDirection:"row", flex:1, alignContent: "space-between"}}>
-                <Button mode="contained" style={{flex:1, alignSelf: "flex-end", flexBasis: "100%" }} onPress={() =>fileManager.saveMatchScoutLog(currentMatchState)}>Submit</Button>
+                <Button mode="contained" 
+                    style={{flex:1, alignSelf: "flex-end", flexBasis: "100%" }}
+                    onPress={() => { 
+                        fileManager.saveMatchScoutLog(currentMatchState).then(
+                            result => { 
+                                router.navigate({pathname: '/QRShow', params:{filePath: result, returnRoute: '/[match]', returnText: 'Next Match'}})
+                    })
+                    }}
+                    >
+                        Submit
+                    </Button>
             </Surface>
         </Surface>
     );
