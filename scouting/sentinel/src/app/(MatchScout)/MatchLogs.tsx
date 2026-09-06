@@ -45,7 +45,10 @@ export default function MatchLogs(): React.JSX.Element {
         <IconButton
           icon={(): React.ReactElement => <List.Icon icon="export" />}
           onPress={(): void => {
-            //router.navigate('QRShow', { routeName: 'MatchLogs', path: path });
+            router.navigate({
+              pathname: '/QRShow',
+              params: {filePath: path, returnRoute: '/MatchLogs', returnText: 'Return to Logs'}
+            });
           }}
         />
       </Surface>

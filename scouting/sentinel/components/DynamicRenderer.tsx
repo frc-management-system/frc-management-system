@@ -31,7 +31,6 @@ export const DynamicRenderer: React.FC<DynamicRendererProps> = ({ config }) => {
       renderedChildren = config.children;
     }
   }
-  console.log({...config.props});
   // Safely produce the element at runtime
   return <Component {...config.props} field={config.field} context={currentMatchState}>{renderedChildren}</Component>;
 };
