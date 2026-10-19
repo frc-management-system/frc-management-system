@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from 'react';
-import { getLogFields } from '../helpers/jsonScreenConfigs';
+import { getInitalRobotState, getLogFields } from '../helpers/jsonScreenConfigs';
 import { EventProps } from '../types/CommonTypes';
 import { Match, MatchInfo } from '../types/MatchScoutTypes';
 import { useTimer } from './TimerContext';
@@ -19,8 +19,8 @@ export interface MatchScoutContextType{
 }
 
 type LoadMatchInfoType = (loadData:string, matchNumber: number, robotState: {}) => void;
-type SetNextMatch = (matchInfo: MatchInfo) => MatchInfo;
-type EditMatchInfo = (matchInfo: MatchInfo, scouter: string, match: number) => MatchInfo;
+type SetNextMatch = () => void;
+type EditMatchInfo = ( scouter: string, match: number) => void;
 type HandleEvents = (events: EventProps[]) => void;
 
 const MatchContext = createContext<MatchScoutContextType>({currentMatchState: {} as MatchScout});
@@ -40,6 +40,7 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
         alliancePosition:'',
         event: '',
         matches: [],
+        currentMatch: {matchNum: 0, teamNum: 0, scouter: ''},
         scouterList: [],
     });
     const [robotState, setRobotState] = useState<Object>({});
@@ -53,6 +54,7 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
             alliance: inputMatchInfo.a,
             alliancePosition: inputMatchInfo.ap,
             matches: [],
+            currentMatch: {matchNum: 0, teamNum: 0, scouter: ''},
             scouterList: []
         };
 
@@ -80,23 +82,31 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
         setRobotState(initialRobotState);
     };
 
-    function setNextMatch(matchInfo: MatchInfo): MatchInfo {
+    function setNextMatch(): void {
         const nextMatch: Match | undefined = matchInfo.matches.find(
             (x: Match) => x.matchNum === (matchInfo.currentMatch?.matchNum ?? 0) + 1
         );
-        matchInfo.currentMatch = nextMatch;
-        return matchInfo;
+        if (nextMatch) {
+            setMatchInfo( oldMatchInfo => ({...oldMatchInfo, currentMatch: nextMatch}));
+            setRobotState(getInitalRobotState('match'));
+            setEventLog([]);
+        }
+        else
+        {
+            const endOfMatches: Match = {matchNum: 9999, teamNum: 9999, scouter: 'endofmatches'};
+            setMatchInfo( oldMatchInfo => ({...oldMatchInfo, currentMatch: endOfMatches}));
+        }
     };
 
-    function editMatchInfo(matchInfo: MatchInfo, scouter:string, match: number): MatchInfo {
+    function editMatchInfo( scouter:string, match: number): void {
         const selectedMatch: Match | undefined = matchInfo.matches.find(
             (x: Match) => x.matchNum === (match ?? 0)
         );
         if (selectedMatch) {
             selectedMatch.scouter = scouter ?? selectedMatch.scouter;
+            setMatchInfo(oldMatchInfo => ({...oldMatchInfo, currentMatch: selectedMatch ?? oldMatchInfo.currentMatch}));
         }
-        matchInfo.currentMatch = selectedMatch ?? matchInfo.currentMatch;
-        return matchInfo;
+        
     };
 
     function incrementRobotStateField(field: string): void {
@@ -112,6 +122,11 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
         setRobotState(oldRobotState => ({...oldRobotState, [field]: currentRadioState == "unchecked" ? "checked" : "unchecked"}));
     };
 
+    function updateStateField(field: string, newValue: string | number | boolean): void {
+        const currentFieldState: string = currentMatchState.robotState[field as keyof typeof currentMatchState.robotState];
+        setRobotState(oldRobotState => ({...oldRobotState, [field]: newValue}))
+    }
+
     function handleEvent(events:EventProps[]):void {
         events.forEach((event) => {
             switch (event.eventType){
@@ -121,33 +136,45 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
                 case "IncrementField":
                     incrementRobotStateField(event.field);
                     break;
+                case "StartMatch":
+                    updateStateField('actionType', 'start');
+                    break;
+                case "SubmitMatch":
+                    updateStateField('actionType', 'endgame');
+                    logEvent();
+                    //setMatchInfo(setNextMatch(matchInfo));
+                    console.log(matchInfo);
+                    //setRobotState(getInitalRobotState('match'));
+                    //setEventLog([]);
+                    break;
+                
             }
             if (event.logCurrentRobotState == true ) {logEvent();};
-            console.log(currentMatchState.eventLog);
+            console.log(eventLog);
         })
     };
 
     function logEvent(): void {
-        const fieldsToLog = getLogFields();
+        const fieldsToLog = getLogFields('match');
         const baseEventToLog = {
-            alliance: currentMatchState.matchInfo.alliance,
-            alliancePosition: currentMatchState.matchInfo.alliancePosition,
-            matchNumber: currentMatchState.matchInfo.currentMatch?.matchNum,
-            teamNumber: currentMatchState.matchInfo.currentMatch?.teamNum,
-            scouter: currentMatchState.matchInfo.currentMatch?.scouter,
+            alliance: matchInfo.alliance,
+            alliancePosition: matchInfo.alliancePosition,
+            matchNumber: matchInfo.currentMatch?.matchNum,
+            teamNumber: matchInfo.currentMatch?.teamNum,
+            scouter: matchInfo.currentMatch?.scouter,
             timestamp: 0
         };
-        const robotStateToLog = Object.fromEntries(Object.entries(currentMatchState.robotState).filter(([key,value]) => fieldsToLog.includes(key)));
+        const robotStateToLog = Object.fromEntries(Object.entries(robotState).filter(([key,value]) => fieldsToLog.includes(key)));
         const eventToLog = {...baseEventToLog, ...robotStateToLog};
         if (eventLog.length == 0){
             timer.start();
-            setEventLog([...currentMatchState.eventLog, eventToLog]);
+            setEventLog([...eventLog, eventToLog]);
         }
         else {
             eventToLog.timestamp = timer.getTimeSeconds();
-            setEventLog([...currentMatchState.eventLog, eventToLog]);
+            setEventLog([...eventLog, eventToLog]);
         }
-        console.log(currentMatchState.eventLog);
+        console.log(eventLog);
     }
     
     

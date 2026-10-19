@@ -54,7 +54,7 @@ export default function QRShow(): React.JSX.Element {
           }}
           mode="contained"
           onPress={() => {
-            router.navigate(routePath);
+            router.dismissTo(routePath);
           }}
         >
           {returnText}

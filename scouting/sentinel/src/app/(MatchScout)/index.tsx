@@ -18,12 +18,11 @@ const [isCameraVisible, setIsCameraVisible] = useState(false);
         <Surface style={{
             ...globalStyles.container,
             flexDirection: 'row',
-            justifyContent:'center',
-            alignItems:'center',
+            alignContent: 'flex-start',
             paddingTop: insets.top,
             paddingBottom: insets.bottom
             }}>
-            <Card mode='contained' style={{width: '100%'}}>
+            <Card mode='contained' style={{flex:1}}>
                 <Card.Actions style={{justifyContent: 'center', alignItems:'center'}}>
                     <Button
                         mode='contained'
@@ -41,10 +40,11 @@ const [isCameraVisible, setIsCameraVisible] = useState(false);
                     >
                         Match Logs
                     </Button>
+
                 </Card.Actions>
             </Card>
             <Surface style={{display: isCameraVisible ? 'flex' : 'none', flexGrow: 4, alignItems: 'center'}}>
-                <QRCapture style={{height:500, width: 500}} context={scoutInfo.currentMatchState} nextPath='[match]' router={router} ></QRCapture>
+                <QRCapture style={{height:500, width: 500}} context={scoutInfo.currentMatchState} nextPath='(MatchScout)/0' router={router} ></QRCapture>
             </Surface>
             
         </Surface>
