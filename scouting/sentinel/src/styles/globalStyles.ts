@@ -5,7 +5,12 @@ export const globalStyles = StyleSheet.create({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
-        height: '100%',
-        width: '100%'
-    }
+        flex: 1
+    },
+    bottom: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  }
 });

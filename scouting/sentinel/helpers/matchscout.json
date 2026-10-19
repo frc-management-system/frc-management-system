@@ -6,11 +6,11 @@
             "components": 
             {
                 "type": "surface",
-                "props": {"style":{"flex": 1,"width": "100%", "justifyContent": "center", "alignItems": "center"}},
+                "props": {"style":{"flexDirection": "column", "height": "100%","width": "100%", "justifyContent": "center", "alignItems": "center"}},
                 "children": [
                     {
                         "type": "card",
-                        "props": {"style":{"flex": 1, "flexGrow": 1 , "alignItems": "space-between", "margin": 20}},
+                        "props": {"style":{"flex": 3, "flexGrow": 1 , "alignSelf": "stretch"}},
                         "children": [
                             {
                                 "type": "cardActions",
@@ -35,6 +35,28 @@
                                             "onPress": [{"eventType": "IncrementField", "field":"clearAlgae", "logCurrentRobotState": true }]
                                         },
                                         "children": "Button Name"
+                                    },
+                                    {
+                                        "type": "textInput",
+                                        "field": "matchNum",
+                                        "props": {
+                                            "style":{"flex": 1},
+                                            "isMatchInfo": "true",
+                                            "disabled": "true",
+                                            "label": "Match Number"
+                                        }
+                                    },
+                                    {
+                                        "type": "text",
+                                        "field": "matchNum",
+                                        "props": { "style": {"flex": 1}, "isMatchInfo": "true"},
+                                        "children": "wrong field"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "field": "teamNum",
+                                        "props": {"style":{"flex": 1}, "isMatchInfo": "true"},
+                                        "children": "wrong field"
                                     }
                                 ]
                             }
@@ -42,6 +64,7 @@
                     },
                     {
                         "type": "text",
+                        "field":"",
                         "props": 
                         {
                             "style":
@@ -62,11 +85,24 @@
             "components":
             {
                 "type": "surface",
-                "props": {"style":{"flex": 1, "flexDirection": "column", "justifyContent": "center", "alignItems": "center"}},
+                "props": {"style":{"flex": 1, "flexDirection": "row", "justifyContent": "center", "alignItems": "center"}},
                 "children": 
                 [
-                    {"type": "text", "props": {"value": "Text box name"}},
-                    {"type": "button", "props": { "mode": "contained", "onPress": "handleEvent('clearAlgae');"}}
+                    {"type": "text", "field":"", "props": {"style": {"flex":1}}, "children":"Page 2 Text"},
+                    {"type": "button", "props": { "style":{"flex":1}}, "children":"Button Name"}
+                ]
+            }
+        },
+        "endgame":{
+            "title": "endgame screen",
+            "components":
+            {
+                "type": "surface",
+                "props": {"style":{"flex": 1, "flexDirection": "row", "justifyContent": "center", "alignItems": "center"}},
+                "children": 
+                [
+                    {"type": "text","field": "", "props": {"style": {"flex":1}}, "children":"Page 3 Text"},
+                    {"type": "button", "props": { "style":{"flex":1}}, "children":"endgame button"}
                 ]
             }
         }

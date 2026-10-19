@@ -11,6 +11,14 @@ interface DynamicRendererProps {
 export const DynamicRenderer: React.FC<DynamicRendererProps> = ({ config }) => {
   const {currentMatchState} = useMatchInfo();
 
+  const matchDetails ={
+    alliance: currentMatchState.matchInfo.alliance,
+    alliancePos: currentMatchState.matchInfo.alliancePosition,
+    matchNum: currentMatchState.matchInfo.currentMatch?.matchNum,
+    teamNum: currentMatchState.matchInfo.currentMatch?.teamNum,
+    scouter: currentMatchState.matchInfo.currentMatch?.scouter
+  }
+
   // Resolve component matching the string key
   const Component = ComponentMap[config.type];
 
@@ -32,5 +40,5 @@ export const DynamicRenderer: React.FC<DynamicRendererProps> = ({ config }) => {
     }
   }
   // Safely produce the element at runtime
-  return <Component {...config.props} field={config.field} context={currentMatchState}>{renderedChildren}</Component>;
+  return <Component {...config.props} field={config.field} context={currentMatchState} matchDetails={matchDetails}>{renderedChildren}</Component>;
 };

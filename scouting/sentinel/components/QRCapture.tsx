@@ -40,7 +40,7 @@ export default function QRCapture({context, nextPath, style, router}: QRCaptureP
         const nextMatchNum: number =
           (await fileManager.getLastMatchNumber(JSON.parse(assignmentTxt ?? '')?.e ?? '', 'MatchScout')) + 1;
 
-        context.load(assignmentTxt, nextMatchNum, getInitalRobotState());
+        context.load(assignmentTxt, nextMatchNum, getInitalRobotState('match'));
 
         await new Promise((res) => setTimeout(res, 500));
         router.navigate(relativePath);
