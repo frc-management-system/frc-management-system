@@ -136,6 +136,9 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
                 case "IncrementField":
                     incrementRobotStateField(event.field);
                     break;
+                case "UpdateField":
+                    updateStateField(event.field, event.newValue ?? "");
+                    break;
                 case "StartMatch":
                     updateStateField('actionType', 'start');
                     break;
