@@ -10,7 +10,7 @@
                 "children": [
                     {
                         "type": "card",
-                        "props": {"style":{"flex": 3, "flexGrow": 1 , "alignSelf": "stretch"}},
+                        "props": {"style": { "alignSelf": "stretch"}},
                         "children": [
                             {
                                 "type": "cardActions",
@@ -57,6 +57,62 @@
                                         "field": "teamNum",
                                         "props": {"style":{"flex": 1}, "isMatchInfo": "true"},
                                         "children": "wrong field"
+                                    }
+                                    
+                                ]
+                            },
+                            {
+                                "type": "card",
+                                "props": {"style": {"flexDirection":"row", "flexWrap": "wrap", "justifyContent": "center"}},
+                                "children":
+                                [
+                                    {
+                                        "type": "cardActions",
+                                        "props":{"style": {"flexDirection":"row", "flexWrap": "wrap", "justifyContent": "space-around"}},
+                                        "children":
+                                        [
+                                            {
+                                                "type": "dropdown",
+                                                "props": {
+                                                    "style": {"height":80, "width":200},
+                                                    "defaultSelection": "",
+                                                    "description": "Test dropdown",
+                                                    "items": [
+                                                        {
+                                                            "title": "Item 1",
+                                                            "onPress":[{"eventType": "UpdateField", "field": "itemTest", "newValue": "Item1", "logCurrentRobotState": true}]
+                                                        },
+                                                        {
+                                                            "title": "Item 2",
+                                                            "onPress":[{"eventType": "UpdateField", "field": "itemTest", "newValue": "Item2", "logCurrentRobotState": true}]
+                                                        }
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "type": "dropdown",
+                                                "props": {
+                                                    "style": {"height":80, "width":200},
+                                                    "defaultSelection": "0",
+                                                    "description": "Select Defense Rating",
+                                                    "items": [
+                                                        {
+                                                            "title": "0",
+                                                            "onPress":[{"eventType": "UpdateField", "field": "defenseRating", "newValue": 0, "logCurrentRobotState": true}]
+                                                        },
+                                                        {
+                                                            "title": "1",
+                                                            "onPress":[{"eventType": "UpdateField", "field": "defenseRating", "newValue": 1, "logCurrentRobotState": true}]
+                                                        },
+                                                        {
+                                                            "title": "2",
+                                                            "onPress":[{"eventType": "UpdateField", "field": "defenseRating", "newValue": 2, "logCurrentRobotState": true}]
+                                                        }
+                                            ]
+                                        }
+                                    }
+
+                                        ]
                                     }
                                 ]
                             }
@@ -118,7 +174,8 @@
         "clearAlgae": 0,
         "defenseRating": 0,
         "hasCoral": false,
-        "hasAlgae": false
+        "hasAlgae": false,
+        "listTest": "item1"
     },
     "logFields":
     [

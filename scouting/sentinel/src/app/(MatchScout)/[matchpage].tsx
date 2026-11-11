@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Surface, useTheme } from 'react-native-paper';
+import { List, Surface, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DynamicRenderer } from '../../../components/DynamicRenderer';
 import ScreenNavigation from '../../../components/ScreenNavigation';
@@ -37,6 +37,12 @@ export default function CustomScreen(): React.JSX.Element {
 
     return(
         <Surface style={{display: 'flex', flex: 1, flexWrap:'wrap', paddingTop: insets.top, paddingBottom: insets.bottom}}>
+            <List.Accordion
+                title="Options"
+            >
+                <List.Item title="Option 1" onPress={() => {}} />
+                <List.Item title="Option 2" onPress={() => {}} />
+            </List.Accordion>
             <DynamicRenderer config={screenComponents} />
             <Surface style={{display: 'flex', flexDirection:"row", alignContent: "space-between"}}>
                 <ScreenNavigation scoutType='match' page={matchpage as string} baseRoute='/[matchpage]' onStartClick={onStartClick} onSubmitClick={onSubmitClick}/>

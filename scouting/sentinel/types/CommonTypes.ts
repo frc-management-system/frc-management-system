@@ -33,5 +33,5 @@ export type EventProps = {
     eventType: string,
     field: string,
     logCurrentRobotState: boolean,
-    newValue?: string | number
+    newValue?: string | number | boolean
 };
