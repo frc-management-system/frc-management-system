@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Button, Card, Surface, useTheme } from 'react-native-paper';
+import { Image, StyleSheet } from 'react-native';
+import { Button, Card, Surface, TouchableRipple, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import QRCapture from '../../../components/QRCapture';
 import { useMatchInfo } from '../../../contexts/MatchScoutContext';
@@ -41,6 +41,13 @@ const [isCameraVisible, setIsCameraVisible] = useState(false);
                         Match Logs
                     </Button>
 
+                </Card.Actions>
+            </Card>
+            <Card mode='contained' style={{flex:1}}>
+                <Card.Actions style={{justifyContent: 'center', alignItems:'center'}}>
+                    <TouchableRipple style={{height: 400, width: 164}} onPress={() => console.log('Image pressed!')} borderless={true} rippleColor={theme.colors.primaryContainer}>
+                        <Image source={require('../../../assets/images/Coral_resize.png')} style={{ flex: 1, height:400, width: 164 }} />
+                    </TouchableRipple>
                 </Card.Actions>
             </Card>
             <Surface style={{display: isCameraVisible ? 'flex' : 'none', flexGrow: 4, alignItems: 'center'}}>

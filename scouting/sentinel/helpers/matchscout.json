@@ -6,7 +6,7 @@
             "components": 
             {
                 "type": "surface",
-                "props": {"style":{"flexDirection": "column", "height": "100%","width": "100%", "justifyContent": "center", "alignItems": "center"}},
+                "props": {"style":{"flexDirection": "column", "height": "50%","width": "100%", "justifyContent": "center", "alignItems": "center"}},
                 "children": [
                     {
                         "type": "card",
