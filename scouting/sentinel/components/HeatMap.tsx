@@ -44,7 +44,7 @@ export default function HeatMap({ image, onCoordinateChange, style }: HeatMapPro
 
 	return (
 		<Surface style={[styles.container, style]}>
-			<View
+			<Surface
 				onLayout={handleLayout}
 				onStartShouldSetResponder={() => true}
 				onResponderMove={handleTouch}
@@ -61,7 +61,7 @@ export default function HeatMap({ image, onCoordinateChange, style }: HeatMapPro
 						]}
 					/>
 				)}
-			</View>
+			</Surface>
 			{coordinates && (
 				<Text accessibilityLiveRegion="polite" style={styles.coordinates} variant="labelMedium">
 					x: {coordinates.x.toFixed(3)}  y: {coordinates.y.toFixed(3)}
