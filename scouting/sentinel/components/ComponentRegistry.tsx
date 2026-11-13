@@ -4,6 +4,7 @@ import { MatchScout } from '../contexts/MatchScoutContext';
 import { EventProps } from '../types/CommonTypes';
 import { ItemSchema } from '../types/ComponentTypes';
 import DropDown from './DropDown';
+import HeatMap from './HeatMap';
 
 
 export const button = ({style, onPress, context, children}: {style?: {}, onPress: EventProps[], context:MatchScout, children: string}) => (
@@ -132,7 +133,7 @@ export const ComponentMap: Record<string, React.ComponentType<any>> = {
   surface,
   cardActions,
   textInput,
-  list,
-  listItem,
-  dropdown
+  dropdown, 
+    incrementer,
+    heatmap: HeatMap,
 };
