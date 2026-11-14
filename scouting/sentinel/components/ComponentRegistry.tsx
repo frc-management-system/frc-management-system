@@ -1,10 +1,12 @@
 import React from 'react';
-import { Button, Card, List, RadioButton, Surface, Text, TextInput } from 'react-native-paper';
+import { ImageSourcePropType } from 'react-native';
+import { Button, Card, RadioButton, Surface, Text, TextInput } from 'react-native-paper';
 import { MatchScout } from '../contexts/MatchScoutContext';
 import { EventProps } from '../types/CommonTypes';
 import { ItemSchema } from '../types/ComponentTypes';
 import DropDown from './DropDown';
 import HeatMap from './HeatMap';
+import Incrementer from './Incrementer';
 
 
 export const button = ({style, onPress, context, children}: {style?: {}, onPress: EventProps[], context:MatchScout, children: string}) => (
@@ -84,34 +86,6 @@ export const cardActions = ({style, children}: { style?:{}, children:React.React
         {children}
     </Card.Actions>
 );
-export const list = (
-    {style, 
-     title, 
-     children, 
-     isMatchInfo
-    }: {
-      style?: {}, 
-      title: string, 
-      children:React.ReactNode, 
-      isMatchInfo?: string
-    }) => (
-    <List.Section>
-        <List.Accordion 
-            style={{...style}}
-            title={title}
-        >
-            {children}
-        </List.Accordion>
-    </List.Section>
-);
-
-export const listItem = ({style, title, onPress, context}: {style?: {}, title: string, onPress: EventProps[], context: MatchScout}) => (
-    <List.Item
-        style={{...style}}
-        title={title}
-        onPress={() => context.handleEvent(onPress)}
-    />
-);
 
 export const dropdown = ({style, defaultSelection, context, items, description}: {style?: {}, defaultSelection: string, context: MatchScout, items: ItemSchema[], description?: string}) => (
     <DropDown
@@ -125,6 +99,23 @@ export const dropdown = ({style, defaultSelection, context, items, description}:
     />
 );
 
+export const incrementer = ({style, initialValue, context, onPress, label}: {style?: {}, initialValue?: number, context: MatchScout, onPress: EventProps[], label?: string}) => (
+    <Incrementer
+        style={{...style}}
+        initialValue={initialValue}
+        handleEvent={() => context.handleEvent(onPress)}
+        label={label}
+    />
+);
+
+export const heatmap = ({style, imageSource, onPress, context}: {style?: {}, imageSource: ImageSourcePropType, onPress: EventProps[], context: MatchScout}) => (
+    <HeatMap
+        style={{...style}}
+        image={require('../assets/images/field.png')}
+        onCoordinateChange={() => context.handleEvent(onPress)}
+    />
+);
+
 export const ComponentMap: Record<string, React.ComponentType<any>> = {
   button,
   text,
@@ -134,6 +125,6 @@ export const ComponentMap: Record<string, React.ComponentType<any>> = {
   cardActions,
   textInput,
   dropdown, 
-    incrementer,
-    heatmap: HeatMap,
+  incrementer,
+  heatmap
 };

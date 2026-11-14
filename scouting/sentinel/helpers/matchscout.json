@@ -108,10 +108,26 @@
                                                             "title": "2",
                                                             "onPress":[{"eventType": "UpdateField", "field": "defenseRating", "newValue": 2, "logCurrentRobotState": true}]
                                                         }
-                                            ]
-                                        }
-                                    }
-
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "type": "incrementer",
+                                                "props": {
+                                                    "style": {"flex": 1},
+                                                    "initialValue": 0,
+                                                    "label": "Clear Algae",
+                                                    "onPress": [{"eventType": "UpdateField", "field": "clearAlgae", "newValue": 0, "logCurrentRobotState": true}]
+                                                }
+                                            },
+                                            {
+                                                "type": "heatmap",
+                                                "props": {
+                                                    "style": {"flex": 1},
+                                                    "imageSource": "field.png",
+                                                    "onPress":[{"eventType": "UpdateField", "field": "location", "newValue": "", "logCurrentRobotState": true}]
+                                                }
+                                            }
                                         ]
                                     }
                                 ]
