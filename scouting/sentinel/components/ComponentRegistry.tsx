@@ -1,5 +1,4 @@
 import React from 'react';
-import { ImageSourcePropType } from 'react-native';
 import { Button, Card, RadioButton, Surface, Text, TextInput } from 'react-native-paper';
 import { MatchScout } from '../contexts/MatchScoutContext';
 import { EventProps } from '../types/CommonTypes';
@@ -108,10 +107,10 @@ export const incrementer = ({style, initialValue, context, onPress, label}: {sty
     />
 );
 
-export const heatmap = ({style, imageSource, onPress, context}: {style?: {}, imageSource: ImageSourcePropType, onPress: EventProps[], context: MatchScout}) => (
+export const heatmap = ({style, imageSource, onPress, context}: {style?: {}, imageSource: string, onPress: EventProps[], context: MatchScout}) => (
     <HeatMap
         style={{...style}}
-        image={require('../assets/images/field.png')}
+        image={imageSource}
         onCoordinateChange={() => context.handleEvent(onPress)}
     />
 );

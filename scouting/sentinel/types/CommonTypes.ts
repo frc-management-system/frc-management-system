@@ -19,6 +19,7 @@ export type TLog<event> = {
 
 export type TFileManager = {
   createBaseDirs: () => void;
+  manuallyAddAssetFile: () => Promise<void>;
   saveMatchScoutLog: (context: MatchScout) => Promise<string>;
   getZippedLog: (path: string) => Promise<string>;
   getEventLogInfo: (eventName: string, scoutType: 'MatchScout' | 'QualitativeScout' | 'PitScout') => Promise<{ name: string; path: string }[]>;
