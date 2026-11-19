@@ -39,7 +39,7 @@ export const textInput = ({
     isMatchInfo, 
     matchDetails, 
     value,
-    disabled,
+    editable,
     onChangeText
     }: {
         style?: {},
@@ -50,7 +50,7 @@ export const textInput = ({
         isMatchInfo?: string, 
         matchDetails: {},   
         value?: string,
-        disabled?: string,
+        editable?: string,
         onChangeText?: EventProps[]
     }) => (
     <TextInput
@@ -58,7 +58,7 @@ export const textInput = ({
         style = {{...style}}
         label={label}
         value={ value == null ? isMatchInfo == 'true' ? (String(matchDetails[field as keyof typeof matchDetails])) : (String(context.robotState[field as keyof typeof context.robotState])) : value}
-        disabled = {disabled == 'true'}
+        editable = {editable == 'true'}
         onChangeText={() => { if(onChangeText) context.handleEvent(onChangeText); }}
     >
     </TextInput>

@@ -42,7 +42,7 @@
                                         "props": {
                                             "style":{"flex": 1},
                                             "isMatchInfo": "true",
-                                            "disabled": "true",
+                                            "editable": "false",
                                             "label": "Match Number"
                                         }
                                     },
