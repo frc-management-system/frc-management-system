@@ -15,6 +15,7 @@ SystemUI.setBackgroundColorAsync('#000000');
             <Stack.Screen name="index" options={{ title: 'Index'}} />
             <Stack.Screen name="(MatchScout)" options={{ title: 'Match Scout Home' }} />
             <Stack.Screen name='QRShow' options={{title: 'Scan QR Code'}} />
+            <Stack.Screen name='Settings' options={{title: 'Settings'}} />
           </Stack> 
       </TimerProvider>
     </PaperProvider>

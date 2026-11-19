@@ -119,6 +119,35 @@
                                                     "label": "Clear Algae",
                                                     "onPress": [{"eventType": "UpdateField", "field": "clearAlgae", "newValue": 0, "logCurrentRobotState": true}]
                                                 }
+                                            },
+                                            {
+                                                "type": "heatmap",
+                                                "props": {
+                                                    "style": {},
+                                                    "imageSource": "field.png",
+                                                    "xField": "X",
+                                                    "yField": "Y",
+                                                    "onPress":[
+                                                        {
+                                                            "eventType":"UpdateField",
+                                                            "field": "actionType",
+                                                            "newValue": "score",
+                                                            "logCurrentRobotState": false
+                                                        },
+                                                        {
+                                                            "eventType": "UpdateField", 
+                                                            "field": "X", 
+                                                            "newValue": "", 
+                                                            "logCurrentRobotState": false
+                                                        },
+                                                        {
+                                                            "eventType": "UpdateField",
+                                                            "field": "Y",
+                                                            "newValue": "",
+                                                            "logCurrentRobotState": true
+                                                        }
+                                                    ]
+                                                }
                                             }
                                         ]
                                     }
@@ -183,7 +212,9 @@
         "defenseRating": 0,
         "hasCoral": false,
         "hasAlgae": false,
-        "listTest": "item1"
+        "listTest": "item1",
+        "X": 0,
+        "Y": 0
     },
     "logFields":
     [
@@ -194,6 +225,8 @@
         "leave",
         "notes",
         "clearAlgae",
-        "defenseRating"
+        "defenseRating",
+        "X",
+        "Y"
     ]
 }

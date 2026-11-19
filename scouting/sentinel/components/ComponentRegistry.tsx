@@ -4,6 +4,7 @@ import { MatchScout } from '../contexts/MatchScoutContext';
 import { EventProps } from '../types/CommonTypes';
 import { ItemSchema } from '../types/ComponentTypes';
 import DropDown from './DropDown';
+import HeatMap from './HeatMap';
 import Incrementer from './Incrementer';
 
 
@@ -105,6 +106,17 @@ export const incrementer = ({style, initialValue, context, onPress, label}: {sty
         label={label}
     />
 );
+
+export const heatmap = ({style, imageSource, onPress, context, xField, yField}: {style?: {}, imageSource: string, onPress: EventProps[], context: MatchScout, xField: string, yField: string}) => (
+    <HeatMap
+        style={{...style}}
+        image={imageSource}
+        onCoordinateChange={context.handleEvent}
+        pressCoordinates={{x: context.robotState[xField as keyof typeof context.robotState], y: context.robotState[yField as keyof typeof context.robotState]}}
+        onPress={onPress}
+    />
+);
+
 export const ComponentMap: Record<string, React.ComponentType<any>> = {
   button,
   text,
@@ -114,5 +126,6 @@ export const ComponentMap: Record<string, React.ComponentType<any>> = {
   cardActions,
   textInput,
   dropdown, 
-  incrementer
+  incrementer,
+  heatmap
 };

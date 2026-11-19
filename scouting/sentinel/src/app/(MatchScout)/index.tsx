@@ -22,7 +22,7 @@ const [isCameraVisible, setIsCameraVisible] = useState(false);
             paddingTop: insets.top,
             paddingBottom: insets.bottom
             }}>
-            <Card mode='contained' style={{flex:1}}>
+            <Card mode='contained' style={{width: "100%"}}>
                 <Card.Actions style={{justifyContent: 'center', alignItems:'center'}}>
                     <Button
                         mode='contained'
@@ -43,6 +43,14 @@ const [isCameraVisible, setIsCameraVisible] = useState(false);
 
                 </Card.Actions>
             </Card>
+{/*             <Card>
+                <Card.Actions>
+                    <HeatMap
+                        style={{}}
+                        image={require('../../../assets/images/field.png')}
+                    />
+                </Card.Actions>
+            </Card> */}
             <Surface style={{display: isCameraVisible ? 'flex' : 'none', flexGrow: 4, alignItems: 'center'}}>
                 <QRCapture style={{height:500, width: 500}} context={scoutInfo.currentMatchState} nextPath='(MatchScout)/0' router={router} ></QRCapture>
             </Surface>

@@ -51,7 +51,7 @@ export default function Index() {
           <Button
             style={styles.button}
             mode='contained'
-            onPress={(): void => {}}
+            onPress={(): void => {router.push('/Settings')}}
           >
             Settings
           </Button>

@@ -1,3 +1,4 @@
+import * as DocumentPicker from 'expo-document-picker';
 import { Directory, File, Paths } from 'expo-file-system';
 import { unzip, zip } from 'react-native-zip-archive';
 import { MatchScout } from '../contexts/MatchScoutContext';
@@ -10,7 +11,29 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
   
   const tempPath =  new Directory(Paths.document, "temp");
   const matchScoutFilePath = new Directory(Paths.document, "matchScoutAssignment");
+
+  const assetPath = new Directory(Paths.document, "assets");
   
+
+  const manuallyAddAssetFile:TFileManager['manuallyAddAssetFile'] = async (): Promise<void> => {
+    const result =  await DocumentPicker.getDocumentAsync({type: '*/*'});
+    if(!result.canceled) {
+      const {name} = result.assets[0];
+      const file= new File(result.assets[0].uri);
+      const assetFile = new File(assetPath, name);
+      file.copy(assetFile, {overwrite:true});
+      console.log("file created at: ", assetFile.uri);
+    }
+  };
+
+  const findAssetPath = (fileName: string): string => {
+    const file = new File(assetPath, fileName);
+    if(file.exists) {
+      return file.uri;
+    } else {
+      throw new Error(`Asset file ${fileName} not found`);
+    }
+  };
 
   const createBaseDirs: TFileManager['createBaseDirs'] =  (): void => {
 
@@ -179,5 +202,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     getLastMatchNumber,
     unzipAssignment,
     unzipB64,
+    manuallyAddAssetFile,
+    findAssetPath
   };
 };
