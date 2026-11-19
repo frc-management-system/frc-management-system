@@ -153,7 +153,6 @@ export function MatchScoutProvider({children}: {children: ReactNode}){
                 
             }
             if (event.logCurrentRobotState == true ) {logEvent();};
-            console.log(eventLog);
         })
     };
 

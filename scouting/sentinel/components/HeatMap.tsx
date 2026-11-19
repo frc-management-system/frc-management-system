@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useImage } from 'expo-image';
+import { useEffect, useState } from 'react';
 import {
     GestureResponderEvent,
     Image,
-    LayoutChangeEvent,
     StyleProp,
     StyleSheet,
     View,
     ViewStyle
 } from 'react-native';
 import { Avatar, Surface, TouchableRipple } from 'react-native-paper';
+import { useFileManager } from '../hooks/useFileManager';
+import { EventProps } from '../types/CommonTypes';
 
 export type HeatMapCoordinates = {
 	x: number;
@@ -17,24 +19,28 @@ export type HeatMapCoordinates = {
 
 type HeatMapProps = {
 	image: string;
-	onCoordinateChange?: (coordinates: HeatMapCoordinates) => void;
+	onCoordinateChange: (event: EventProps[]) => void;
 	style?: StyleProp<ViewStyle>;
+    pressCoordinates: HeatMapCoordinates;
+    onPress: EventProps[];
 };
 
-const startingCoordinates: HeatMapCoordinates = { x: 0, y: 0 };
+const fileManager = useFileManager();
 
-export default function HeatMap({ image, onCoordinateChange, style }: HeatMapProps): React.JSX.Element {
+export default function HeatMap({ image, onCoordinateChange, style, pressCoordinates, onPress }: HeatMapProps): React.JSX.Element {
 	const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
-	const [coordinates, setCoordinates] = useState<HeatMapCoordinates>(startingCoordinates);
+	const [coordinates, setCoordinates] = useState<HeatMapCoordinates>(pressCoordinates);
     const [markerVisible, setMarkerVisible] = useState(false);
 
-    const imageSource: string = `../assets/images/${image}`;
-    const {width, height} = Image.resolveAssetSource({ uri: imageSource });
-
-	const handleLayout = (event: LayoutChangeEvent) => {
-		setImageSize({ width, height });
-        console.log(`Image layout: width=${width}, height=${height}`);
-	};
+    const imageSource = fileManager.findAssetPath(image);
+    const imageInfo = useImage(imageSource);
+    
+    useEffect(():void => {
+        if(imageInfo)
+        {
+            setImageSize({width: (imageInfo.width*imageInfo.scale), height: (imageInfo.height*imageInfo.scale)});
+        }
+    },[imageInfo]);
 
 	const handleTouch = (event: GestureResponderEvent) => {
         
@@ -48,7 +54,7 @@ export default function HeatMap({ image, onCoordinateChange, style }: HeatMapPro
 
 		setCoordinates(nextCoordinates);
         setMarkerVisible(true);
-		onCoordinateChange?.(nextCoordinates);
+		onCoordinateChange(setEventProps(onPress));
         setTimeout(() => setMarkerVisible(false), 500); // Hide the marker after 2 seconds
 	};
 
@@ -64,6 +70,15 @@ export default function HeatMap({ image, onCoordinateChange, style }: HeatMapPro
         setMarkerVisible(true);
     };
 
+    const setEventProps = (events: EventProps[]): EventProps[] => {
+        const newProps: EventProps[] = events.map((event) => (
+            event.eventType == "UpdateField" && event.field.includes('X')? { ...event, newValue: coordinates.x}:
+            (event.eventType == "UpdateField" && event.field.includes('Y')) ? {...event, newValue: coordinates.y} : event
+                
+        ));
+        return newProps;
+    };
+
     const showMarker = (x:number, y:number) => {
 
         return (
@@ -72,6 +87,7 @@ export default function HeatMap({ image, onCoordinateChange, style }: HeatMapPro
             </Surface>
         )
     };
+    
 
     
 
@@ -82,7 +98,6 @@ export default function HeatMap({ image, onCoordinateChange, style }: HeatMapPro
                     showMarker(coordinates.x, coordinates.y)
                 )}
 			<TouchableRipple
-				onLayout={handleLayout}
                 onPressIn={handlePressIn}
 				onPressOut={handleTouch}
 				style={{ height: imageSize.height, width: imageSize.width, ...styles.imageFrame }}

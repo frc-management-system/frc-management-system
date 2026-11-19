@@ -107,11 +107,13 @@ export const incrementer = ({style, initialValue, context, onPress, label}: {sty
     />
 );
 
-export const heatmap = ({style, imageSource, onPress, context}: {style?: {}, imageSource: string, onPress: EventProps[], context: MatchScout}) => (
+export const heatmap = ({style, imageSource, onPress, context, xField, yField}: {style?: {}, imageSource: string, onPress: EventProps[], context: MatchScout, xField: string, yField: string}) => (
     <HeatMap
         style={{...style}}
         image={imageSource}
-        onCoordinateChange={() => context.handleEvent(onPress)}
+        onCoordinateChange={context.handleEvent}
+        pressCoordinates={{x: context.robotState[xField as keyof typeof context.robotState], y: context.robotState[yField as keyof typeof context.robotState]}}
+        onPress={onPress}
     />
 );
 

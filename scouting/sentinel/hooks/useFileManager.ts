@@ -18,13 +18,25 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
   const manuallyAddAssetFile:TFileManager['manuallyAddAssetFile'] = async (): Promise<void> => {
     const result =  await DocumentPicker.getDocumentAsync({type: '*/*'});
     if(!result.canceled) {
-      const {uri} = result.assets[0];
-      const file= new File(assetPath, uri, result.assets[0].name);
+      const {name} = result.assets[0];
+      const file= new File(result.assets[0].uri);
+      const assetFile = new File(assetPath, name);
+      file.copy(assetFile, {overwrite:true});
+      console.log("file created at: ", assetFile.uri);
+    }
+  };
+
+  const findAssetPath = (fileName: string): string => {
+    const file = new File(assetPath, fileName);
+    if(file.exists) {
+      return file.uri;
+    } else {
+      throw new Error(`Asset file ${fileName} not found`);
     }
   };
 
   const createBaseDirs: TFileManager['createBaseDirs'] =  (): void => {
-    
+
     if(!logsRoot.exists) {logsRoot.create()}
     if(!tempPath.exists) {tempPath.create()}
 
@@ -190,5 +202,7 @@ export const useFileManager: () => TFileManager = (): TFileManager => {
     getLastMatchNumber,
     unzipAssignment,
     unzipB64,
+    manuallyAddAssetFile,
+    findAssetPath
   };
 };

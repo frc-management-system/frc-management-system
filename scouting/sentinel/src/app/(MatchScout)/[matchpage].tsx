@@ -2,7 +2,6 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Surface, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DynamicRenderer } from '../../../components/DynamicRenderer';
-import HeatMap from '../../../components/HeatMap';
 import ScreenNavigation from '../../../components/ScreenNavigation';
 import { useMatchInfo } from '../../../contexts/MatchScoutContext';
 import { getScreenComponent } from '../../../helpers/jsonScreenConfigs';
@@ -39,7 +38,6 @@ export default function CustomScreen(): React.JSX.Element {
     return(
         <Surface style={{display: 'flex', flex: 1, flexWrap:'wrap', paddingTop: insets.top, paddingBottom: insets.bottom}}>
             <DynamicRenderer config={screenComponents} />
-            <HeatMap image={require('../../../assets/images/field.png')} />
             <Surface style={{display: 'flex', flexDirection:"row", alignContent: "space-between"}}>
                 <ScreenNavigation scoutType='match' page={matchpage as string} baseRoute='/[matchpage]' onStartClick={onStartClick} onSubmitClick={onSubmitClick}/>
             </Surface>

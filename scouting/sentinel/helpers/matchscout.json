@@ -123,9 +123,30 @@
                                             {
                                                 "type": "heatmap",
                                                 "props": {
-                                                    "style": {"flex": 1},
+                                                    "style": {},
                                                     "imageSource": "field.png",
-                                                    "onPress":[{"eventType": "UpdateField", "field": "location", "newValue": "", "logCurrentRobotState": true}]
+                                                    "xField": "X",
+                                                    "yField": "Y",
+                                                    "onPress":[
+                                                        {
+                                                            "eventType":"UpdateField",
+                                                            "field": "actionType",
+                                                            "newValue": "score",
+                                                            "logCurrentRobotState": false
+                                                        },
+                                                        {
+                                                            "eventType": "UpdateField", 
+                                                            "field": "X", 
+                                                            "newValue": "", 
+                                                            "logCurrentRobotState": false
+                                                        },
+                                                        {
+                                                            "eventType": "UpdateField",
+                                                            "field": "Y",
+                                                            "newValue": "",
+                                                            "logCurrentRobotState": true
+                                                        }
+                                                    ]
                                                 }
                                             }
                                         ]
@@ -191,7 +212,9 @@
         "defenseRating": 0,
         "hasCoral": false,
         "hasAlgae": false,
-        "listTest": "item1"
+        "listTest": "item1",
+        "X": 0,
+        "Y": 0
     },
     "logFields":
     [
@@ -202,6 +225,8 @@
         "leave",
         "notes",
         "clearAlgae",
-        "defenseRating"
+        "defenseRating",
+        "X",
+        "Y"
     ]
 }
